@@ -74,47 +74,37 @@ async function setup() {
     try {
         console.log('📝 Please provide your Appwrite configuration:\n');
 
+        // Collect all answers first
         for (const question of questions) {
             await askQuestion(question);
         }
+
+        console.log('\n⏳ Updating configuration...');
 
         // Update the appwrite config file
         const configPath = path.join(__dirname, '..', 'app', 'config', 'appwrite.js');
         let configContent = fs.readFileSync(configPath, 'utf8');
 
-        // Replace the placeholder values with actual configuration
-        configContent = configContent.replace(
-            /\.setEndpoint\('YOUR_APPWRITE_ENDPOINT'\)/,
-            `.setEndpoint('${config.endpoint}')`
-        );
-        configContent = configContent.replace(
-            /\.setProject\('YOUR_PROJECT_ID'\)/,
-            `.setProject('${config.projectId}')`
-        );
-        configContent = configContent.replace(
-            /export const DATABASE_ID = 'YOUR_DATABASE_ID'/,
-            `export const DATABASE_ID = '${config.databaseId}'`
-        );
-        configContent = configContent.replace(
-            /ROLES: 'YOUR_ROLES_COLLECTION'/,
-            `ROLES: '${config.rolesCollection}'`
-        );
-        configContent = configContent.replace(
-            /USERS: 'YOUR_USERS_COLLECTION'/,
-            `USERS: '${config.usersCollection}'`
-        );
-        configContent = configContent.replace(
-            /INGREDIENTS: 'YOUR_INGREDIENTS_COLLECTION'/,
-            `INGREDIENTS: '${config.ingredientsCollection}'`
-        );
-        configContent = configContent.replace(
-            /INGREDIENT_MOVEMENTS: 'YOUR_MOVEMENTS_COLLECTION'/,
-            `INGREDIENT_MOVEMENTS: '${config.movementsCollection}'`
-        );
+        // Perform all replacements in one go
+        const replacements = [
+            { from: /\.setEndpoint\('YOUR_APPWRITE_ENDPOINT'\)/, to: `.setEndpoint('${config.endpoint}')` },
+            { from: /\.setProject\('YOUR_PROJECT_ID'\)/, to: `.setProject('${config.projectId}')` },
+            { from: /export const DATABASE_ID = 'YOUR_DATABASE_ID'/, to: `export const DATABASE_ID = '${config.databaseId}'` },
+            { from: /ROLES: 'YOUR_ROLES_COLLECTION'/, to: `ROLES: '${config.rolesCollection}'` },
+            { from: /USERS: 'YOUR_USERS_COLLECTION'/, to: `USERS: '${config.usersCollection}'` },
+            { from: /INGREDIENTS: 'YOUR_INGREDIENTS_COLLECTION'/, to: `INGREDIENTS: '${config.ingredientsCollection}'` },
+            { from: /INGREDIENT_MOVEMENTS: 'YOUR_MOVEMENTS_COLLECTION'/, to: `INGREDIENT_MOVEMENTS: '${config.movementsCollection}'` }
+        ];
 
+        // Apply all replacements
+        replacements.forEach(({ from, to }) => {
+            configContent = configContent.replace(from, to);
+        });
+
+        // Write the updated content
         fs.writeFileSync(configPath, configContent);
 
-        console.log('\n✅ Configuration updated successfully!');
+        console.log('✅ Configuration updated successfully!');
         console.log('\n📋 Next steps:');
         console.log('1. Create your Appwrite database and collections');
         console.log('2. Set up the required attributes for each collection');

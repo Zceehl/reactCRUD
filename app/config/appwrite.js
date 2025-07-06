@@ -2,20 +2,20 @@ import { Account, Client, Databases } from 'appwrite';
 
 // Appwrite Configuration
 const client = new Client()
-    .setEndpoint('YOUR_APPWRITE_ENDPOINT') // Will be replaced by setup script
-    .setProject('YOUR_PROJECT_ID'); // Will be replaced by setup script
+    .setEndpoint('https://cloud.appwrite.io/v1') // Will be replaced by setup script
+    .setProject('dairy-box-wonderpets'); // Will be replaced by setup script
 
 export const databases = new Databases(client);
 export const account = new Account(client);
 export { client };
 
 // Database and Collection IDs
-export const DATABASE_ID = 'YOUR_DATABASE_ID'; // Will be replaced by setup script
+export const DATABASE_ID = 'inventory_system'; // Will be replaced by setup script
 export const COLLECTIONS = {
-    ROLES: 'YOUR_ROLES_COLLECTION', // Will be replaced by setup script
-    USERS: 'YOUR_USERS_COLLECTION', // Will be replaced by setup script
-    INGREDIENTS: 'YOUR_INGREDIENTS_COLLECTION', // Will be replaced by setup script
-    INGREDIENT_MOVEMENTS: 'YOUR_MOVEMENTS_COLLECTION' // Will be replaced by setup script
+    ROLES: 'roles', // Will be replaced by setup script
+    USERS: 'users', // Will be replaced by setup script
+    INGREDIENTS: 'ingredients', // Will be replaced by setup script
+    INGREDIENT_MOVEMENTS: 'ingredient_movements' // Will be replaced by setup script
 };
 
 // Appwrite Collection Structure
